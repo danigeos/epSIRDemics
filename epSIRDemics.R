@@ -1,5 +1,5 @@
 # MODELO SIRD (modificado del de JMO)
-# Usaremos una variante de modelo SIRD, ver pdf adjunto explicativo. 
+# Usaremos una variante de modelo SIRD.
 # S (susceptibles), 
 # I (infecciosos), 
 # R (recuperados) 
@@ -8,24 +8,24 @@
 #
 # tiempo en días y las demás variables en millares de personas.
 
-# Podemos resolver numericamente estos sistemas en R gracias a la función ode() del package deSolve
-# Instalar con:
-##  install.packages("deSolve")
-
 library(deSolve) # para usar la funci?n "ode" 
 
 # Paso 1: Sistemas de ecuaciones diferenciales en R
+# Podemos resolver numericamente estos sistemas en R gracias a la función ode() del package deSolve
+# Instalar con:
+##  install.packages("deSolve")
 # Se usa con la función with() function abajo:
 sird_equations <- function(time, variables, parameters) {
-    with(as.list(c(variables, parameters)), {
-      dS <- -alpha(time) * I * S + gamma * R
-      dI <-  alpha(time) * I * S - beta * I - delta*I
-      dR <-  beta * I
-      dD <-  delta * I
-      dC <-  alpha(time) * I * S * q
-      return(list(c(dS, dI, dR, dD, dC)))
-    })
-  }
+  with(as.list(c(variables, parameters)), {
+    dS <- -alpha(time) * I * S + gamma * R
+    dI <-  alpha(time) * I * S - beta * I - delta*I
+    dR <-  beta * I
+    dD <-  delta * I
+    dC <-  alpha(time) * I * S * q
+    return(list(c(dS, dI, dR, dD, dC)))
+  })
+}
+
 #PARÁMETROS
 poblacion <- 47000 #en miles de individuos
 p <- 0.50 #proporción inicial de susceptibles
@@ -99,8 +99,8 @@ with(sird_values, {
     time, C, lty = 3, type = "l", col = "dark red",
     xlim = c(0,365), cex.axis=0.9,
     ylim = c(-10,1000),
-    xlab = "time (days)", 
-    ylab = "persons (x1000)",
+    xlab = "tiempo (días)", 
+    ylab = "personas (x1000)",
     main = "Evolución epidemia - modelo SIRD"
   )
   lines(time, I, col = "red")
